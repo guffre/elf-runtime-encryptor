@@ -1,6 +1,10 @@
 # elf-runtime-encryptor
 Encrypts and decrypts functions during runtime. Functions are only decrypted while in use.
 
+Takes advantage of the instrumentation provided by `-ffunction-instrumentation`, and uses the enter/exits to decrypt and then reencrypt memory.
+
+Memory is marked RWX while being instrumented, but is promptly set back to normal RX permissions when normal program flow resumes.
+
 # How it works
 The methodology of the elf runtime encryptor is that it locates the "highest" (lowest memory address) call/jmp to `__cyg_profile_func_enter`
 It then locates the "lowest" (highest memory address) call/jmp to `__cyg_profile_func_exit`
